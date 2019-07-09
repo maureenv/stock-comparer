@@ -31,10 +31,20 @@ const App = () => {
     }
   }
 
+// https://blog.logrocket.com/a-guide-to-usestate-in-react-ecb9952e406c/
   const onSearch = async e => {
     setFormData({ ...formData, searchParam: e.target.value })
+    if ( e.target.value.length === 0 ) {
+      return setSearchResults([])
+    }
+
     try {
-      const res = await axios.get(`/find_stock/${ searchParam }`)
+      console.log(e.target.value, 'the value')
+      const res = await axios.get(`/find_stock/${ e.target.value }`)
+      console.log(res.data, 'the data')
+      // setSearchResults( prevState => {
+      //   return { ...prevState, searchResults: res.data }
+      // })
       setSearchResults( res.data )
     }
     catch (err) {
@@ -42,10 +52,8 @@ const App = () => {
     }
   }
 
-  // chart
-  // dividend
-  // financials
-  // in the news
+  console.log(searchResults, 'the search results')
+
 
   return (
     <div className="bg-black h-screen p-4">
@@ -71,6 +79,7 @@ const App = () => {
           value={ searchParam }
           onChange={ e => onSearch(e)}
         />
+        { searchResults.map( s => s.name ) }
       </div>
     </div>
   )

@@ -79,8 +79,10 @@ app.get('/get_all_tickers', async (req, res) => {
 
 app.get('/find_stock/:query', async (req, res) => {
   const searchParam = req.params.query
+  console.log(searchParam, 'the search param')
   try {
     const searchResults = await AllStocks.find({ $or: [ {"symbol": {'$regex': new RegExp('^' + searchParam, 'i')}}, {"name": {'$regex': new RegExp('^' + searchParam, 'i')}} ] })
+    console.log(searchResults, 'search results')
     res.json(searchResults)
   }
   catch(err) {
